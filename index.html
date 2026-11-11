@@ -304,15 +304,6 @@ button {
   content: "";
 }
 
-.hero-video {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .hero-grid {
   position: relative;
   z-index: 1;
@@ -670,8 +661,7 @@ button {
   position: absolute;
   z-index: -1;
   inset: 0;
-  background: url("padrao03.png") repeat;
-  background-size: 190px;
+  background: url("padrao03.png") center / cover no-repeat;
   content: "";
   opacity: 0.07;
   pointer-events: none;
@@ -1001,10 +991,6 @@ button {
     scroll-behavior: auto;
   }
 
-  .hero-video {
-    display: none;
-  }
-
   *,
   *::before,
   *::after {
@@ -1042,9 +1028,6 @@ button {
 
   <main>
     <section class="hero" id="inicio">
-      <video class="hero-video" autoplay muted loop playsinline poster="festa.jpg" aria-hidden="true" tabindex="-1">
-        <source src="intro.mp4" type="video/mp4">
-      </video>
       <div class="container hero-grid">
         <div class="hero-copy">
           <h1 class="hero-tagline">“Onde a Magia ganha mais Cor!”</h1>
