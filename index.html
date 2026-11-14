@@ -1022,7 +1022,7 @@ button {
       <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
         <a href="#inicio">Início</a><a href="#projeto">Quem somos</a><a href="#servicos">Serviços</a><a href="#pedido">Marcação</a><a href="#galeria">Galeria</a>
       </nav>
-      <a class="btn btn-primary btn-small nav-cta" href="#servicos">✦ Vamos festejar?</a>
+      <a class="btn btn-primary btn-small nav-cta" href="#pedido">✦ Vamos festejar?</a>
     </div>
   </header>
 
@@ -1179,7 +1179,7 @@ button {
               <textarea id="request-message" name="message" rows="4"></textarea>
             </div>
           </div>
-          <button class="btn btn-primary request-form-submit" type="submit">Enviar pedido por email</button>
+          <button class="btn btn-primary request-form-submit" type="submit">Enviar pedido por WhatsApp</button>
         </form>
       </div>
     </section>
@@ -1355,13 +1355,13 @@ button {
         const label = field.labels[0].textContent.trim();
         return `${label}: ${value}`;
       });
-      const subject = 'Pedido de marcação - Magia das Cores';
-      const body = details.length
-        ? details.join('\n')
-        : 'Gostaria de obter informações sobre o Pack Brilhante.';
-      const mailto = `mailto:festas.magiadascores@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const body = [
+        'Olá! Gostaria de fazer uma marcação com a Magia das Cores.',
+        ...details
+      ].join('\n');
+      const whatsappUrl = `https://wa.me/351916807516?text=${encodeURIComponent(body)}`;
 
-      window.location.href = mailto;
+      window.location.href = whatsappUrl;
     });
   </script>
 
