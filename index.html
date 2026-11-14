@@ -296,6 +296,15 @@ button {
     linear-gradient(135deg, #2b8a92, #29345f);
 }
 
+.hero-video {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .hero::before {
   position: absolute;
   z-index: 0;
@@ -441,27 +450,6 @@ button {
   background: linear-gradient(135deg, #f9d6e7, #f3b25d 45%, #7fc7d4);
 }
 
-.text-photo-layout .slider-arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 4;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.88);
-  box-shadow: 0 8px 18px rgba(41, 52, 95, 0.12);
-  color: var(--ink);
-  font-size: 1.3rem;
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-
-.text-photo-layout .slider-arrow.prev { left: 12px; }
-.text-photo-layout .slider-arrow.next { right: 12px; }
-
 @media (max-width: 740px) {
   .text-photo-layout {
     grid-template-columns: 1fr;
@@ -551,7 +539,20 @@ button {
   background: linear-gradient(135deg, #f7d1b0, #f5b6d2 42%, #7ed9e5);
 }
 
-.pack-visual img {
+.pack-visual .slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s ease;
+}
+
+.pack-visual .slide {
+  position: relative;
+  flex: 0 0 100%;
+  min-height: inherit;
+}
+
+.pack-visual .slide img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -559,8 +560,26 @@ button {
   object-fit: cover;
 }
 
+.pack-actions {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.pack-theme-field {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+.pack-actions .btn {
+  flex: 0 0 auto;
+}
+
 .pack-badge {
   position: absolute;
+  z-index: 1;
   top: 20px;
   left: 20px;
   padding: 9px 14px;
@@ -644,6 +663,15 @@ button {
   .pack-visual {
     min-height: 260px;
   }
+
+  .pack-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pack-actions .btn {
+    align-self: flex-start;
+  }
 }
 
 .gallery-section {
@@ -704,6 +732,13 @@ button {
 
 .request-form .form-row label {
   color: var(--ink);
+}
+
+.request-form .children-minimum-notice {
+  margin: 8px 0 0;
+  color: #8a4b00;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .request-form .form-row input,
@@ -898,10 +933,6 @@ button {
     font-size: 0.84rem;
   }
 
-  .brand-logo {
-    width: 125px;
-  }
-
 }
 
 @media (max-width: 740px) {
@@ -916,7 +947,7 @@ button {
   }
 
   .brand-logo {
-    width: 115px;
+    width: 76px;
   }
 
   .menu-toggle {
@@ -981,6 +1012,10 @@ button {
 }
 
 @media (max-width: 430px) {
+  .brand-logo {
+    width: 66px;
+  }
+
   .hero-tagline {
     font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
@@ -996,6 +1031,10 @@ button {
   *::after {
     animation: none;
     transition: none;
+  }
+
+  .hero-video {
+    display: none;
   }
 
 }
@@ -1028,6 +1067,9 @@ button {
 
   <main>
     <section class="hero" id="inicio">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="festa.jpg" aria-hidden="true">
+        <source src="clip.mp4" type="video/mp4">
+      </video>
       <div class="container hero-grid">
         <div class="hero-copy">
           <h1 class="hero-tagline">“Onde a Magia ganha mais Cor!”</h1>
@@ -1062,10 +1104,6 @@ button {
             </div>
           </div>
 
-          <button class="slider-arrow prev" type="button" aria-label="Imagem anterior">&#10094;</button>
-          <button class="slider-arrow next" type="button" aria-label="Imagem seguinte">&#10095;</button>
-<!--bruh-->
-
         </div>
       </div>
     </section>
@@ -1085,11 +1123,27 @@ button {
               <span>Mínimo 15 crianças</span>
               <span>Experiência completa</span>
             </div>
+            <div class="pack-actions">
+              <div class="form-row pack-theme-field">
+                <label for="request-theme">Sugestão de tema para a festa</label>
+                <input id="request-theme" name="theme" type="text" form="request-form" placeholder="Ex.: animais, espaço, arco-íris">
+              </div>
+              <a class="btn btn-primary" href="#pedido">Pedir informações</a>
+            </div>
             <p class="pack-price"><strong>15€</strong><span>por criança</span></p>
-            <a class="btn btn-primary" href="#pedido">Pedir informações</a>
           </div>
-          <div class="pack-visual">
-            <img src="decoracao02.jpg" alt="Criança a fazer pintura facial numa festa" decoding="async">
+          <div class="pack-visual" data-slider aria-label="Imagens do Pack Brilhante" aria-roledescription="apresentação de diapositivos">
+            <div class="slider-track">
+              <div class="slide">
+                <img src="decoracao02.jpg" alt="Criança a fazer pintura facial numa festa" decoding="async">
+              </div>
+              <div class="slide">
+                <img src="DSC_0555.JPG" alt="Criança a brincar num insuflável" loading="lazy" decoding="async">
+              </div>
+              <div class="slide">
+                <img src="DSC_0475.JPG" alt="Mesa preparada para uma festa" loading="lazy" decoding="async">
+              </div>
+            </div>
             <span class="pack-badge">A festa começa aqui</span>
           </div>
         </div>
@@ -1157,10 +1211,6 @@ button {
               <input id="request-birthday-age" name="birthdayAge" type="number" min="1" step="1" inputmode="numeric">
             </div>
             <div class="form-row">
-              <label for="request-theme">Tema</label>
-              <input id="request-theme" name="theme" type="text">
-            </div>
-            <div class="form-row">
               <label for="request-cake">Bolo</label>
               <select id="request-cake" name="cake">
                 <option value="">Seleciona uma opção</option>
@@ -1172,7 +1222,8 @@ button {
             </div>
             <div class="form-row">
               <label for="request-children">Número de crianças</label>
-              <input id="request-children" name="children" type="number" min="15" step="1" inputmode="numeric">
+              <input id="request-children" name="children" type="number" min="1" step="1" inputmode="numeric" aria-describedby="children-minimum-notice">
+              <p class="children-minimum-notice" id="children-minimum-notice" role="status" aria-live="polite" hidden>Mínimo 15 crianças</p>
             </div>
             <div class="form-row form-row--full">
               <label for="request-message">Mensagem</label>
@@ -1238,6 +1289,17 @@ button {
           <a href="https://www.instagram.com/festas.magiadascores" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
         </nav>
       </div>
+      <div class="footer-location">
+        <h2 class="footer-heading">Morada e mapa</h2>
+        <address class="footer-address">Rua do Comendador Francisco Quintas, n.º 835<br>4495-110 Póvoa de Varzim</address>
+        <iframe
+          class="footer-map"
+          title="Mapa da Magia das Cores"
+          src="https://www.google.com/maps?q=Rua%20do%20Comendador%20Francisco%20Quintas%2C%20835%2C%204495-110%20P%C3%B3voa%20de%20Varzim&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
     </div>
     <div class="container footer-bottom">
       <p>© 2026 Magia das Cores · Showcase multimédia</p>
@@ -1269,8 +1331,6 @@ button {
     document.querySelectorAll('[data-slider]').forEach((slider) => {
       const track = slider.querySelector('.slider-track');
       const slides = Array.from(slider.querySelectorAll('.slide'));
-      const prevBtn = slider.querySelector('.slider-arrow.prev');
-      const nextBtn = slider.querySelector('.slider-arrow.next');
       const dotsWrap = slider.querySelector('.slider-dots');
       let currentIndex = 0;
       let autoplayInterval;
@@ -1316,18 +1376,6 @@ button {
         autoplayInterval = undefined;
       }
 
-      prevBtn?.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        render();
-        startAutoplay();
-      });
-
-      nextBtn?.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % slides.length;
-        render();
-        startAutoplay();
-      });
-
       slider.addEventListener('mouseenter', stopAutoplay);
       slider.addEventListener('mouseleave', startAutoplay);
       slider.addEventListener('focusin', stopAutoplay);
@@ -1343,6 +1391,13 @@ button {
 
   <script>
     const requestForm = document.getElementById('request-form');
+    const childrenInput = document.getElementById('request-children');
+    const childrenMinimumNotice = document.getElementById('children-minimum-notice');
+
+    childrenInput.addEventListener('input', () => {
+      const childrenCount = Number(childrenInput.value);
+      childrenMinimumNotice.hidden = childrenInput.value === '' || childrenCount >= 15;
+    });
 
     requestForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -1383,7 +1438,20 @@ button {
         ['atividades01.jpg', 'Atividade infantil'],
         ['atividades02.jpg', 'Mais atividades infantis'],
         ['footbal.jpg', 'Atividade desportiva infantil'],
-        ['dsc_0015.jpg', 'Momento de animação infantil']
+        ['dsc_0015.jpg', 'Momento de animação infantil'],
+        ['DSC_0019.jpg', 'Criança a jogar um jogo de alinhamento'],
+        ['DSC_0061.jpg', 'Criança a escolher brinquedos'],
+        ['DSC_0161.jpg', 'Jogo de mesa no espaço infantil'],
+        ['DSC_0520.JPG', 'Grupo a brincar numa festa infantil'],
+        ['DSC_0555.JPG', 'Criança a brincar num insuflável'],
+        ['DSC_0564.JPG', 'Criança a brincar no insuflável'],
+        ['image00002.JPG', 'Crianças a assistir a uma atividade'],
+        ['image00028.JPG', 'Crianças a escolher fantasias'],
+        ['image00055.JPG', 'Momento de animação com as crianças'],
+        ['image00094.JPG', 'Atividade criativa no espaço da festa'],
+        ['image00104.JPG', 'Criança a participar numa atividade de jogo'],
+        ['image00107.JPG', 'Crianças a brincar no insuflável'],
+        ['image00130.JPG', 'Crianças a brincar no insuflável']
       ],
       food: [
         ['festa.jpg', 'Festa de aniversário'],
@@ -1397,16 +1465,46 @@ button {
         ['capturar15.jpg', 'Detalhes de uma festa'],
         ['gomas.jpg', 'Gomas para uma festa infantil'],
         ['lanche01.jpg', 'Lanche de festa'],
-        ['bolo.png', 'Bolo de aniversário']
+        ['bolo.png', 'Bolo de aniversário'],
+        ['DSC_0117.jpg', 'Bolo de aniversário decorado'],
+        ['DSC_0295.JPG', 'Lembranças para os convidados'],
+        ['DSC_0302.JPG', 'Detalhes de lembranças personalizadas'],
+        ['DSC_0350.JPG', 'Mesa com lembranças da festa'],
+        ['DSC_0474.JPG', 'Bolo de aniversário decorado'],
+        ['DSC_0475.JPG', 'Mesa preparada para a festa'],
+        ['DSC_0691.JPG', 'Embalagens de lembranças de festa'],
+        ['DSC_0710.JPG', 'Bolo de aniversário'],
+        ['DSC_0712.JPG', 'Crianças a desfrutar do lanche'],
+        ['DSC_0785.JPG', 'Mesa de lanche decorada para a festa'],
+        ['DSC_0799.JPG', 'Bolo de aniversário decorado'],
+        ['DSC_0979.JPG', 'Máquina de pipocas'],
+        ['DSC_1095.JPG', 'Bolo de aniversário'],
+        ['image00090.JPG', 'Mesa decorada para uma festa'],
+        ['image00091.JPG', 'Máquina de pipocas'],
+        ['image00096.JPG', 'Bolo de aniversário'],
+        ['image00198.JPG', 'Criança a desfrutar do lanche'],
+        ['image00236.JPG', 'Preparação de lanche de festa'],
+        ['image00245.JPG', 'Lanche servido numa festa infantil']
       ]
     };
     document.querySelectorAll('.gallery-slideshow').forEach((gallery) => {
       const slides = galleryCategories[gallery.dataset.galleryCategory];
       const images = Array.from(gallery.querySelectorAll('.gallery-photos img'));
       const photoTrack = gallery.querySelector('.gallery-photos');
+      function loadGalleryImages() {
+        const bounds = gallery.getBoundingClientRect();
+        if (bounds.top >= window.innerHeight + 200 || bounds.bottom <= -200) return;
+        images.forEach((image) => {
+          image.loading = 'eager';
+        });
+        window.removeEventListener('scroll', loadGalleryImages);
+      }
       const groupCount = Math.ceil(slides.length / images.length);
       let currentGroup = 0;
       let autoplayInterval;
+
+      window.addEventListener('scroll', loadGalleryImages, {passive: true});
+      loadGalleryImages();
 
       function renderGallery() {
         const firstSlide = currentGroup * images.length;
