@@ -753,6 +753,14 @@ button {
   box-shadow: 0 0 0 3px rgba(100,182,191,0.18);
 }
 
+.request-form .extras-field {
+  margin: 0 0 18px;
+}
+
+.request-form .extras-field select {
+  min-height: 48px;
+}
+
 .gallery-arrow:focus-visible {
   outline: 3px solid var(--purple-dark);
   outline-offset: 3px;
@@ -1219,6 +1227,17 @@ button {
               <input id="request-children" name="children" type="number" min="1" step="1" inputmode="numeric" aria-describedby="children-minimum-notice">
               <p class="children-minimum-notice" id="children-minimum-notice" role="status" aria-live="polite" hidden>Mínimo 15 crianças</p>
             </div>
+            <div class="form-row form-row--full extras-field">
+              <label for="request-extras">Extras (opcional)</label>
+              <select id="request-extras" name="extras" multiple size="1">
+                <option value="Meias antiderrapantes — 3,50€ / criança">Meias antiderrapantes — 3,50€ / criança</option>
+                <option value="Mini pizzas — 1,50€ / criança">Mini pizzas — 1,50€ / criança</option>
+                <option value="Pinhata — 15€">Pinhata — 15€</option>
+                <option value="Mascote — 30€">Mascote — 30€</option>
+                <option value="Saco de gomas — 2€ / criança">Saco de gomas — 2€ / criança</option>
+                <option value="Espetáculo de magia — 100€">Espetáculo de magia — 100€</option>
+              </select>
+            </div>
             <div class="form-row form-row--full">
               <label for="request-message">Mensagem</label>
               <textarea id="request-message" name="message" rows="4"></textarea>
@@ -1401,14 +1420,17 @@ button {
     requestForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const details = Array.from(new FormData(requestForm), ([name, value]) => ({
+      const formData = new FormData(requestForm);
+      const selectedExtras = formData.getAll('extras').map(value => String(value).trim()).filter(Boolean);
+      const details = Array.from(formData, ([name, value]) => ({
         name,
         value: String(value).trim()
-      })).filter(({value}) => value).map(({name, value}) => {
+      })).filter(({name, value}) => name !== 'extras' && value).map(({name, value}) => {
         const field = requestForm.elements.namedItem(name);
         const label = field.labels[0].textContent.trim();
         return `${label}: ${value}`;
       });
+      if (selectedExtras.length) details.push(`Extras: ${selectedExtras.join(', ')}`);
       const body = [
         'Olá! Gostaria de fazer uma marcação com a Magia das Cores.',
         ...details
